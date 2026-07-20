@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#6b5cff">
+  <title>成長星球集點簿</title>
+  <style>
+    :root{--bg:#f6f7fb;--card:#fff;--text:#25263b;--muted:#74788e;--primary:#6b5cff;--primary2:#9f7aea;--good:#12875f;--danger:#d94d4d;--line:#e8e9f1;--shadow:0 10px 30px rgba(50,45,100,.10)}
+    *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#ece9ff,#f7f8fc 260px);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC",sans-serif;color:var(--text)}
+    button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+    .app{max-width:820px;margin:auto;min-height:100vh;padding:env(safe-area-inset-top) 14px calc(88px + env(safe-area-inset-bottom))}
+    .loginWrap{min-height:100vh;display:grid;place-items:center;padding:22px}.loginCard{width:min(430px,100%);background:#fff;border-radius:28px;padding:24px;box-shadow:var(--shadow)}
+    .logo{font-size:48px;text-align:center}.loginCard h1{text-align:center;margin:8px 0 4px}.sub{text-align:center;color:var(--muted);font-size:14px;margin-bottom:20px}
+    .header{padding:18px 4px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px}.profile{display:flex;align-items:center;gap:12px}.avatar{width:58px;height:58px;border-radius:20px;display:grid;place-items:center;background:#fff;box-shadow:var(--shadow);font-size:34px}.name{font-size:20px;font-weight:800}.tag{font-size:12px;color:var(--muted)}.points{text-align:right;font-size:32px;font-weight:900;color:var(--primary)}
+    .tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;background:rgba(255,255,255,.8);backdrop-filter:blur(12px);padding:7px;border-radius:18px;position:sticky;top:8px;z-index:10;box-shadow:0 8px 20px rgba(60,50,120,.08)}
+    .tab{border:0;background:transparent;padding:10px 2px;border-radius:13px;color:var(--muted);font-weight:700;font-size:12px}.tab.active{background:#fff;color:var(--primary);box-shadow:0 4px 12px rgba(70,55,160,.12)}
+    .view{display:none;padding-top:14px}.view.active{display:block}.card{background:var(--card);border-radius:22px;padding:16px;box-shadow:var(--shadow);margin-bottom:14px}.card h2{font-size:18px;margin:0 0 12px}.hero{background:linear-gradient(135deg,#6b5cff,#9f7aea);color:#fff}.heroRow{display:flex;justify-content:space-between;align-items:end}.hero .big{font-size:44px;font-weight:900}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.action{border:1px solid var(--line);background:#fff;border-radius:17px;padding:14px;text-align:left;min-height:95px}.action .icon{font-size:26px}.action b{display:block;margin-top:7px}.action span{font-size:12px;color:var(--muted)}
+    .category{margin-bottom:14px}.categoryHeader{display:flex;gap:10px;align-items:center;margin-bottom:8px}.badge{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;color:#fff;font-weight:900;background:var(--primary)}
+    .item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.item:last-child{border-bottom:0}.itemText{flex:1}.itemTitle{font-weight:700;font-size:14px}.itemMeta{font-size:12px;color:var(--muted);margin-top:3px}.plus{border:0;background:#eeecff;color:var(--primary);font-weight:900;border-radius:12px;padding:9px 10px;min-width:66px}
+    .field{margin-bottom:12px}label{display:block;font-size:13px;color:#565a70;font-weight:700;margin-bottom:6px}input,select,textarea{width:100%;border:1px solid var(--line);background:#fbfbfe;border-radius:14px;padding:12px 13px;outline:none}textarea{min-height:86px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .primary{width:100%;border:0;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border-radius:15px;padding:13px;font-weight:800}.secondary{border:1px solid var(--line);background:#fff;border-radius:13px;padding:10px 12px;font-weight:700}.danger{color:var(--danger)}
+    .historyItem{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.histMain{flex:1}.histTitle{font-weight:700;font-size:14px}.histTime{font-size:11px;color:var(--muted);margin-top:3px}.amount{font-weight:900}.positive{color:var(--good)}.negative{color:var(--danger)}.empty{text-align:center;color:var(--muted);padding:24px}
+    .avatarChoices{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.avatarChoice{border:2px solid transparent;border-radius:16px;background:#f6f6fb;aspect-ratio:1;display:grid;place-items:center;font-size:30px}.avatarChoice.active{border-color:var(--primary);background:#eeecff}
+    .itemEditor{display:grid;grid-template-columns:80px 1fr 90px 46px;gap:8px;align-items:center;margin-bottom:8px}.note{font-size:12px;color:var(--muted);line-height:1.6}.status{font-size:12px;color:var(--good);text-align:center;margin-top:8px}.logout{border:0;background:#fff;color:var(--danger);border-radius:12px;padding:9px 11px;box-shadow:var(--shadow)}
+    .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(100px);background:#22243a;color:#fff;padding:11px 15px;border-radius:999px;opacity:0;transition:.25s;z-index:99}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    @media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}.tab{font-size:13px}}
+    @media(max-width:560px){.itemEditor{grid-template-columns:68px 1fr 70px 42px}.tabs{grid-template-columns:repeat(5,1fr)}.avatarChoices{grid-template-columns:repeat(5,1fr)}}
+  </style>
+</head>
+<body>
+  <section id="loginScreen" class="loginWrap">
+    <div class="loginCard">
+      <div class="logo">🪐</div><h1>成長星球集點簿</h1><div class="sub">管理者登入後，資料會同步儲存在 Firebase 雲端</div>
+      <form id="loginForm">
+        <div class="field"><label>管理者電子郵件</label><input id="loginEmail" type="email" autocomplete="username" required></div>
+        <div class="field"><label>密碼</label><input id="loginPassword" type="password" autocomplete="current-password" required></div>
+        <button class="primary" type="submit">登入管理</button>
+        <div id="loginStatus" class="status"></div>
+      </form>
+    </div>
+  </section>
+
+  <main id="app" class="app hidden">
+    <header class="header">
+      <div class="profile"><div class="avatar" id="topAvatar">🌟</div><div><div class="name" id="topName">我的小星星</div><div class="tag">每一次努力，都值得被看見</div></div></div>
+      <div><div class="points" id="topPoints">3,702</div><button id="logoutBtn" class="logout">登出</button></div>
+    </header>
+    <nav class="tabs">
+      <button class="tab active" data-view="home">首頁</button><button class="tab" data-view="add">集點</button><button class="tab" data-view="redeem">兌換</button><button class="tab" data-view="manage">項目</button><button class="tab" data-view="settings">設定</button>
+    </nav>
+
+    <section class="view active" id="home">
+      <div class="card hero"><div class="heroRow"><div><small>目前累積</small><div class="big" id="heroPoints">3,702</div><small>成長點數</small></div><div style="font-size:58px">🏆</div></div></div>
+      <div class="grid">
+        <button class="action" data-go="add"><div class="icon">➕</div><b>新增優良表現</b><span>依設定標準快速加點</span></button>
+        <button class="action" id="quickReading"><div class="icon">📚</div><b>閱讀集點</b><span>輸入頁數自動換算</span></button>
+        <button class="action" data-go="redeem"><div class="icon">🎮</div><b>兌換 3C 時間</b><span>點數換使用分鐘</span></button>
+        <button class="action" id="undoBtn"><div class="icon">↩️</div><b>復原上一筆</b><span>撤銷最近一次紀錄</span></button>
+      </div>
+      <div class="card" style="margin-top:14px"><h2>最近紀錄</h2><div id="recentHistory"></div></div>
+    </section>
+
+    <section class="view" id="add"><div id="categories"></div></section>
+
+    <section class="view" id="redeem">
+      <div class="card"><h2>🎮 兌換 3C 使用時間</h2><div class="note" id="rateText"></div><div class="field" style="margin-top:12px"><label>兌換分鐘</label><input id="redeemMinutes" type="number" min="1" inputmode="numeric"></div><div class="field"><label>備註</label><input id="redeemNote" placeholder="例如：週六看卡通"></div><button id="redeemBtn" class="primary">確認兌換</button></div>
+      <div class="card"><h2>兌換紀錄</h2><div id="redeemHistory"></div></div>
+    </section>
+
+    <section class="view" id="manage">
+      <div class="card"><h2>🧩 集點項目與點數</h2><p class="note">可修改類別、項目名稱及點數。閱讀類請將類型設為「每頁計點」。</p><div id="itemEditors"></div><button id="addItemBtn" class="secondary">＋新增項目</button><button id="saveItemsBtn" class="primary" style="margin-top:12px">儲存全部項目</button></div>
+    </section>
+
+    <section class="view" id="settings">
+      <div class="card"><h2>👧 孩子資料</h2><div class="field"><label>孩子名字</label><input id="childName" maxlength="20"></div><label>代表圖片</label><div id="avatarChoices" class="avatarChoices"></div><button id="saveProfileBtn" class="primary" style="margin-top:14px">儲存孩子資料</button></div>
+      <div class="card"><h2>⚙️ 點數與兌換設定</h2><div class="row"><div class="field"><label>每幾點</label><input id="ratePoints" type="number" min="1"></div><div class="field"><label>兌換 1 分鐘</label><input value="1" disabled></div></div><div class="field"><label>手動調整目前點數</label><input id="manualPoints" type="number"></div><button id="saveSettingsBtn" class="primary">儲存設定</button></div>
+      <div class="card"><h2>☁️ 雲端狀態</h2><p class="note">目前資料由 Firebase Authentication 驗證管理者身分，並儲存在 Cloud Firestore。只有規則中指定的管理者 UID 可以讀寫。</p><div id="cloudUser" class="status"></div></div>
+    </section>
+  </main>
+  <div id="toast" class="toast"></div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js';
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js';
+    import { getFirestore, doc, getDoc, setDoc, collection, query, orderBy, limit, getDocs, serverTimestamp, runTransaction, deleteDoc } from 'https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js';
+    import { firebaseConfig } from './firebase-config.js';
+
+    const fb = initializeApp(firebaseConfig);
+    const auth = getAuth(fb);
+    const db = getFirestore(fb);
+    const stateRef = doc(db,'growthApp','state');
+    const historyCol = collection(db,'growthApp','history','items');
+    const AVATARS=['🌟','🐰','🐻','🦄','🐱','🐶','🦊','🐼','🌈','🚀','🦋','🐯'];
+    const DEFAULT_ITEMS=[
+      {id:'a1',category:'A',title:'月考達 95 分',points:100,type:'fixed'},
+      {id:'a2',category:'A',title:'月考達 90 分以上',points:50,type:'fixed'},
+      {id:'a3',category:'A',title:'複習卷或評量達 90 分以上',points:10,type:'fixed'},
+      {id:'b1',category:'B',title:'報名校內比賽或作品送件',points:100,type:'fixed'},
+      {id:'b2',category:'B',title:'校內比賽或作品送件獲獎',points:300,type:'fixed'},
+      {id:'b3',category:'B',title:'報名校外比賽或作品送件',points:200,type:'fixed'},
+      {id:'b4',category:'B',title:'校外比賽或作品送件獲獎',points:500,type:'fixed'},
+      {id:'c1',category:'C',title:'自主閱讀並分享內容',points:1,type:'perPage'},
+      {id:'d1',category:'D',title:'跳繩或跑步連續 20 分鐘',points:20,type:'fixed'},
+      {id:'d2',category:'D',title:'騎車、打球或健行 30 分鐘',points:20,type:'fixed'},
+      {id:'e1',category:'E',title:'美讀文章至少 3 次且無錯字',points:10,type:'fixed'},
+      {id:'e2',category:'E',title:'完整背誦律詩以上詩詞',points:30,type:'fixed'},
+      {id:'e3',category:'E',title:'完整背誦優美文章段落',points:0,type:'fixed'}
+    ];
+    const DEFAULT_STATE={name:'我的小星星',avatar:'🌟',points:3702,rate:10,items:DEFAULT_ITEMS};
+    let state=structuredClone(DEFAULT_STATE), selectedAvatar='🌟';
+
+    const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+    function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.tt);window.tt=setTimeout(()=>t.classList.remove('show'),1800)}
+    function fmt(n){return Number(n||0).toLocaleString('zh-TW')}
+    function esc(s){return String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+    function goView(id){$$('.view').forEach(v=>v.classList.toggle('active',v.id===id));$$('.tab').forEach(t=>t.classList.toggle('active',t.dataset.view===id));if(id==='manage')renderEditors()}
+
+    async function ensureState(){const snap=await getDoc(stateRef);if(!snap.exists()){await setDoc(stateRef,{...DEFAULT_STATE,updatedAt:serverTimestamp()});state=structuredClone(DEFAULT_STATE)}else{state={...DEFAULT_STATE,...snap.data()};state.items=Array.isArray(state.items)&&state.items.length?state.items:DEFAULT_ITEMS}selectedAvatar=state.avatar;renderAll()}
+    async function loadHistory(){const q=query(historyCol,orderBy('createdAt','desc'),limit(50));const s=await getDocs(q);return s.docs.map(d=>({id:d.id,...d.data()}))}
+    async function addPoints(item,pages=0,note=''){
+      let amount=item.type==='perPage'?Math.max(0,Number(pages))*Number(item.points):Number(item.points);
+      if(item.type==='perPage'&&amount<=0)return toast('請輸入閱讀頁數');
+      const hRef=doc(historyCol);
+      await runTransaction(db,async tx=>{const snap=await tx.get(stateRef);const current=snap.exists()?snap.data():DEFAULT_STATE;tx.set(stateRef,{...current,points:Number(current.points||0)+amount,updatedAt:serverTimestamp()},{merge:true});tx.set(hRef,{title:item.title,category:item.category,amount,type:'earn',pages:Number(pages||0),note,createdAt:serverTimestamp()})});
+      await ensureState();toast(`已增加 ${fmt(amount)} 點`)
+    }
+    async function redeem(){const mins=Number($('#redeemMinutes').value);if(!mins||mins<1)return toast('請輸入兌換分鐘');const cost=mins*Number(state.rate);if(cost>state.points)return toast('目前點數不足');const hRef=doc(historyCol);await runTransaction(db,async tx=>{const snap=await tx.get(stateRef);const cur=snap.data();if(Number(cur.points)<cost)throw new Error('點數不足');tx.update(stateRef,{points:Number(cur.points)-cost,updatedAt:serverTimestamp()});tx.set(hRef,{title:`兌換 3C ${mins} 分鐘`,amount:-cost,type:'redeem',minutes:mins,note:$('#redeemNote').value.trim(),createdAt:serverTimestamp()})});$('#redeemMinutes').value='';$('#redeemNote').value='';await ensureState();toast('兌換完成')}
+    async function undoLast(){const q=query(historyCol,orderBy('createdAt','desc'),limit(1));const s=await getDocs(q);if(s.empty)return toast('目前沒有可復原紀錄');const h=s.docs[0],amount=Number(h.data().amount||0);if(!confirm(`確定復原「${h.data().title}」？`))return;await runTransaction(db,async tx=>{const st=await tx.get(stateRef);tx.update(stateRef,{points:Number(st.data().points)-amount,updatedAt:serverTimestamp()});tx.delete(h.ref)});await ensureState();toast('已復原上一筆')}
+
+    function renderAll(){
+      $('#topName').textContent=state.name;$('#topAvatar').textContent=state.avatar;$('#topPoints').textContent=fmt(state.points);$('#heroPoints').textContent=fmt(state.points);$('#childName').value=state.name;$('#ratePoints').value=state.rate;$('#manualPoints').value=state.points;$('#rateText').textContent=`目前兌換比例：${state.rate} 點可兌換 1 分鐘。`;renderCategories();renderAvatars();renderHistory();
+    }
+    function renderCategories(){const groups={};state.items.forEach(i=>(groups[i.category]??=[]).push(i));$('#categories').innerHTML=Object.entries(groups).sort().map(([cat,items])=>`<div class="card category"><div class="categoryHeader"><div class="badge">${esc(cat)}</div><h2 style="margin:0">${categoryName(cat)}</h2></div>${items.map(i=>`<div class="item"><div class="itemText"><div class="itemTitle">${esc(i.title)}</div><div class="itemMeta">${i.type==='perPage'?`每頁 +${fmt(i.points)} 點`:`+${fmt(i.points)} 點`}</div></div><button class="plus" data-add="${esc(i.id)}">${i.type==='perPage'?'輸入頁數':`+${fmt(i.points)}`}</button></div>`).join('')}</div>`);$$('[data-add]').forEach(b=>b.onclick=()=>handleItem(state.items.find(i=>i.id===b.dataset.add)))}
+    function categoryName(c){return ({A:'功課與評量',B:'比賽與徵選',C:'閱讀',D:'運動',E:'朗誦與背誦'})[c]||`自訂類別 ${c}`}
+    function handleItem(item){if(item.type==='perPage'){const pages=prompt('請輸入閱讀頁數');if(pages!==null)addPoints(item,pages)}else{const note=prompt('可輸入備註（可留白）','');if(note!==null)addPoints(item,0,note)}}
+    async function renderHistory(){const hs=await loadHistory();const row=h=>`<div class="historyItem"><div class="histMain"><div class="histTitle">${esc(h.title)}</div><div class="histTime">${h.createdAt?.toDate?new Intl.DateTimeFormat('zh-TW',{dateStyle:'short',timeStyle:'short'}).format(h.createdAt.toDate()):'同步中'}${h.note?` · ${esc(h.note)}`:''}</div></div><div class="amount ${h.amount>=0?'positive':'negative'}">${h.amount>=0?'+':''}${fmt(h.amount)}</div></div>`;$('#recentHistory').innerHTML=hs.length?hs.slice(0,8).map(row).join(''):'<div class="empty">尚無紀錄</div>';const rs=hs.filter(h=>h.type==='redeem');$('#redeemHistory').innerHTML=rs.length?rs.map(row).join(''):'<div class="empty">尚無兌換紀錄</div>'}
+    function renderAvatars(){$('#avatarChoices').innerHTML=AVATARS.map(a=>`<button class="avatarChoice ${a===selectedAvatar?'active':''}" data-avatar="${a}">${a}</button>`).join('');$$('[data-avatar]').forEach(b=>b.onclick=()=>{selectedAvatar=b.dataset.avatar;renderAvatars()})}
+    function renderEditors(){$('#itemEditors').innerHTML=state.items.map((i,idx)=>`<div class="itemEditor" data-index="${idx}"><input class="eCat" value="${esc(i.category)}" maxlength="3" aria-label="類別"><input class="eTitle" value="${esc(i.title)}" aria-label="項目名稱"><input class="ePoints" type="number" value="${Number(i.points)}" aria-label="點數"><button class="secondary danger eDel" title="刪除">✕</button><select class="eType" style="grid-column:2/4"><option value="fixed" ${i.type==='fixed'?'selected':''}>固定點數</option><option value="perPage" ${i.type==='perPage'?'selected':''}>每頁計點</option></select></div>`).join('');$$('.eDel').forEach((b,idx)=>b.onclick=()=>{state.items.splice(idx,1);renderEditors()})}
+    function collectEditors(){return $$('.itemEditor').map((row,idx)=>({id:state.items[idx]?.id||crypto.randomUUID(),category:row.querySelector('.eCat').value.trim().toUpperCase()||'Z',title:row.querySelector('.eTitle').value.trim()||'未命名項目',points:Number(row.querySelector('.ePoints').value||0),type:row.querySelector('.eType').value}))}
+
+    $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();$('#loginStatus').textContent='登入中…';try{await signInWithEmailAndPassword(auth,$('#loginEmail').value.trim(),$('#loginPassword').value);$('#loginStatus').textContent=''}catch(err){$('#loginStatus').textContent='登入失敗：請確認帳號、密碼及 Firebase 設定。'}});
+    $('#logoutBtn').onclick=()=>signOut(auth);$$('.tab').forEach(t=>t.onclick=()=>goView(t.dataset.view));$$('[data-go]').forEach(b=>b.onclick=()=>goView(b.dataset.go));$('#quickReading').onclick=()=>{const item=state.items.find(i=>i.type==='perPage');item?handleItem(item):toast('尚未設定每頁計點項目')};$('#redeemBtn').onclick=redeem;$('#undoBtn').onclick=undoLast;
+    $('#saveProfileBtn').onclick=async()=>{await setDoc(stateRef,{name:$('#childName').value.trim()||'我的小星星',avatar:selectedAvatar,updatedAt:serverTimestamp()},{merge:true});await ensureState();toast('孩子資料已儲存')};
+    $('#saveSettingsBtn').onclick=async()=>{const rate=Number($('#ratePoints').value),points=Number($('#manualPoints').value);if(rate<1||!Number.isFinite(points))return toast('請輸入有效設定');await setDoc(stateRef,{rate,points,updatedAt:serverTimestamp()},{merge:true});await ensureState();toast('設定已儲存')};
+    $('#addItemBtn').onclick=()=>{state.items.push({id:crypto.randomUUID(),category:'Z',title:'新集點項目',points:10,type:'fixed'});renderEditors()};
+    $('#saveItemsBtn').onclick=async()=>{const items=collectEditors();await setDoc(stateRef,{items,updatedAt:serverTimestamp()},{merge:true});state.items=items;renderCategories();toast('集點項目已儲存')};
+
+    onAuthStateChanged(auth,async user=>{if(user){$('#loginScreen').classList.add('hidden');$('#app').classList.remove('hidden');$('#cloudUser').textContent=`已登入：${user.email}（UID：${user.uid}）`;try{await ensureState()}catch(err){console.error(err);toast('無法讀取雲端資料，請檢查 Firestore 規則與管理者 UID')}}else{$('#app').classList.add('hidden');$('#loginScreen').classList.remove('hidden')}});
+  </script>
+</body>
+</html>
