@@ -28,6 +28,26 @@
     .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(100px);background:#22243a;color:#fff;padding:11px 15px;border-radius:999px;opacity:0;transition:.25s;z-index:99}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
     @media(min-width:700px){.grid{grid-template-columns:repeat(4,1fr)}.tab{font-size:13px}}
     @media(max-width:560px){.itemEditor{grid-template-columns:68px 1fr 70px 42px}.tabs{grid-template-columns:repeat(5,1fr)}.avatarChoices{grid-template-columns:repeat(5,1fr)}}
+   
+    .brandBar{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:18px 4px 4px;
+    }
+
+    .brandLogo{
+    font-size:34px;
+    line-height:1;
+    }
+
+    .brandTitle{
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:.5px;
+    color:var(--primary);
+    }
   </style>
 </head>
 <body>
@@ -79,6 +99,11 @@
       <div class="card"><h2>⚙️ 點數與兌換設定</h2><div class="row"><div class="field"><label>每幾點</label><input id="ratePoints" type="number" min="1"></div><div class="field"><label>兌換 1 分鐘</label><input value="1" disabled></div></div><div class="field"><label>手動調整目前點數</label><input id="manualPoints" type="number"></div><button id="saveSettingsBtn" class="primary">儲存設定</button></div>
       <div class="card"><h2>☁️ 雲端狀態</h2><p class="note">目前資料由 Firebase Authentication 驗證管理者身分，並儲存在 Cloud Firestore。只有規則中指定的管理者 UID 可以讀寫。</p><div id="cloudUser" class="status"></div></div>
     </section>
+
+    <div class="brandBar" aria-label="成長星球集點簿">
+      <div class="brandLogo" aria-hidden="true">🪐</div>
+      <div class="brandTitle">成長星球集點簿</div>
+    </div>
   </main>
   <div id="toast" class="toast"></div>
 
