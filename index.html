@@ -66,6 +66,12 @@
   <main id="app" class="app hidden">
     <header class="header">
       <div class="profile"><div class="avatar" id="topAvatar">🌟</div><div><div class="name" id="topName">我的小星星</div><div class="tag">每一次努力，都值得被看見</div></div></div>
+
+      <div class="brandBar" aria-label="成長星球集點簿">
+      <div class="brandLogo" aria-hidden="true">🪐</div>
+      <div class="brandTitle">成長星球集點簿</div>
+      </div>
+      
       <div><div class="points" id="topPoints">3,702</div><button id="logoutBtn" class="logout">登出</button></div>
     </header>
     <nav class="tabs">
@@ -99,11 +105,6 @@
       <div class="card"><h2>⚙️ 點數與兌換設定</h2><div class="row"><div class="field"><label>每幾點</label><input id="ratePoints" type="number" min="1"></div><div class="field"><label>兌換 1 分鐘</label><input value="1" disabled></div></div><div class="field"><label>手動調整目前點數</label><input id="manualPoints" type="number"></div><button id="saveSettingsBtn" class="primary">儲存設定</button></div>
       <div class="card"><h2>☁️ 雲端狀態</h2><p class="note">目前資料由 Firebase Authentication 驗證管理者身分，並儲存在 Cloud Firestore。只有規則中指定的管理者 UID 可以讀寫。</p><div id="cloudUser" class="status"></div></div>
     </section>
-
-    <div class="brandBar" aria-label="成長星球集點簿">
-      <div class="brandLogo" aria-hidden="true">🪐</div>
-      <div class="brandTitle">成長星球集點簿</div>
-    </div>
   </main>
   <div id="toast" class="toast"></div>
 
